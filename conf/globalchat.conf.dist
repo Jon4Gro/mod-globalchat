@@ -48,7 +48,7 @@ GlobalChat.Chat.TextColor = "FFFFFF"
 #                     0 - (Disabled)
 #
 
-GlobalChat.Player.NameColor = 1
+GlobalChat.Player.NameColor = 0
 
 #
 #    GlobalChat.Player.FactionIcon
@@ -66,7 +66,7 @@ GlobalChat.Player.FactionIcon = 0
 #                     0 - (Disabled)
 #
 
-GlobalChat.Player.RaceIcon = 1
+GlobalChat.Player.RaceIcon = 0
 
 #
 #    GlobalChat.Player.ClassIcon
@@ -137,7 +137,7 @@ GlobalChat.PlayTimeToChat = 300
 #                     0 - (Disabled)
 #
 
-GlobalChat.CoolDown = 2
+GlobalChat.CoolDown = 3
 
 #
 #    GlobalChat.SendToIgnored
@@ -175,7 +175,7 @@ GlobalChat.AnnounceMutes = 0
 #                     0 - (Disabled)
 #
 
-GlobalChat.Profanity.BlockType = 1
+GlobalChat.Profanity.BlockType = 0
 
 #
 #    GlobalChat.Profanity.BlockLevel
@@ -246,7 +246,7 @@ GlobalChat.URL.BlockLevel = 0
 #                     0  - (Disabled)
 #
 
-GlobalChat.URL.MuteType = 1
+GlobalChat.URL.MuteType = 2
 
 #
 #    GlobalChat.URL.MuteTime
@@ -255,7 +255,7 @@ GlobalChat.URL.MuteType = 1
 #                     0   - (Disabled)
 #
 
-GlobalChat.URL.MuteTime = 120
+GlobalChat.URL.MuteTime = 90
 
 #
 #    GlobalChat.URL.Whitelist

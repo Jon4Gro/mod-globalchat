@@ -26,20 +26,20 @@
 #include "Player.h"
 #include "SocialMgr.h"
 #include <regex>
-#include <string_view>
 #include <unordered_map>
 
 class GlobalChatData;
 
 struct ChatProfanityEntry
 {
+    //uint32      ID;
     char const* Text;
     int32       Language;
 };
 
 enum GlobalChatAcoreStrings
 {
-    LANG_FORBIDDEN_PHRASE_ANNOUNCE_GM = 17000, 
+    LANG_FORBIDDEN_PHRASE_ANNOUNCE_GM = 17000, // Entry from sql acore_strings
     LANG_FORBIDDEN_URL_ANNOUNCE_GM,
     LANG_GLOBALCHAT_STATE_ANNOUNCE_WORLD,
     LANG_GLOBALCHAT_PLAYER_MUTED_ANNOUNCE_WORLD,
@@ -111,7 +111,7 @@ public:
     std::string GetClassColor(Player* player);
     std::string GetRaceIcon(Player* player);
 
-    void SendGlobalChat(WorldSession* session, std::string_view message, TeamId toTeam = TEAM_NEUTRAL);
+    void SendGlobalChat(WorldSession* session, const char* message, TeamId toTeam = TEAM_NEUTRAL);
 
     void PlayerJoinCommand(ChatHandler* handler);
     void PlayerLeaveCommand(ChatHandler* handler);

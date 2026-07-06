@@ -15,11 +15,76 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-void AddSC_GlobalChat();
-void AddSC_globalchat_commandscript();
+#include "ChannelMgr.h"
+#include "GlobalChatMgr.h"
+#include "ScriptMgr.h"
+#include "StringFormat.h"
 
-void Addmod_globalchatScripts()
+class GlobalChat_Config : public WorldScript
 {
-    AddSC_GlobalChat();
-    AddSC_globalchat_commandscript();
+public: 
+    GlobalChat_Config() : WorldScript("GlobalChat_Config") { };
+
+    void OnAfterConfigLoad(bool reload) override
+    {
+        sGlobalChatMgr->LoadConfig(reload);
+    }
+};
+
+class GlobalChat_Player : public PlayerScript
+{
+public:
+    GlobalChat_Player() : PlayerScript("GlobalChat_Player") { }
+
+    void OnLogin(Player* player) override
+    {
+        if (sGlobalChatMgr->GlobalChatEnabled)
+        {
+            if (sGlobalChatMgr->Announce)
+            {
+                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00GlobalChat|r module. Use |cff4CFF00.help global|r to find out how to use it.");
+            }
+
+            sGlobalChatMgr->LoadPlayerData(player);
+
+            if (!sGlobalChatMgr->IsInChat(player->GetGUID()))
+            {
+                if (sGlobalChatMgr->JoinChannel && !sGlobalChatMgr->ChatName.empty())
+                {
+                    ChatHandler(player->GetSession()).SendSysMessage(Acore::StringFormat("You can join the |cffFF0000GlobalChat|r by typing |cffFF0000.joinglobal|r or |cffFF0000/join {}|r at any time.", sGlobalChatMgr->ChatName));
+                }
+                else
+                {
+                    ChatHandler(player->GetSession()).SendSysMessage("You can join the |cffFF0000GlobalChat|r by typing |cffFF0000.joinglobal|r at any time.");
+                }
+            }
+        }
+    }
+
+    void OnSave(Player* player) override
+    {
+        sGlobalChatMgr->SavePlayerData(player);
+    }
+
+    void OnChat(Player* player, uint32 /*type*/, uint32 lang, std::string& msg, Channel* channel) override
+    {
+        if (sGlobalChatMgr->JoinChannel && !sGlobalChatMgr->ChatName.empty() && lang != LANG_ADDON && channel->GetName() == sGlobalChatMgr->ChatName)
+        {
+            if (sGlobalChatMgr->FactionSpecific && player->GetSession()->GetSecurity() > 0)
+            {
+                ChatHandler(player->GetSession()).SendSysMessage("Please use |cff4CFF00.galliance|r or .|cff4CFF00ghorde|r for the GlobalChat as GM.");
+                msg = "";
+                return;
+            }
+
+            sGlobalChatMgr->SendGlobalChat(player->GetSession(), msg);
+            msg = "";
+        }
+    }
+};
+
+void AddSC_GlobalChat()
+{
+    new GlobalChat_Config();
+    new GlobalChat_Player();
 }
